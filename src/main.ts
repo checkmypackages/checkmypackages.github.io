@@ -1,5 +1,10 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+// main.ts
+import VNetworkGraph from "v-network-graph"
+import { createApp } from "vue"
+import "v-network-graph/lib/style.css"
+import App from "./App.vue"
 
-createApp(App).mount('#app')
+const app = createApp(App)
+
+app.use(VNetworkGraph)
+app.mount("#app")

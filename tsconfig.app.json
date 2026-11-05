@@ -5,6 +5,13 @@
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
 
+    /* Bundler mode */
+    "module": "nodenext",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": false,
+    "moduleDetection": "force",
+    "noEmit": true,
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,
