@@ -79,12 +79,9 @@ function buildNetwork(count: number, nodes: vNG.Nodes, edges: vNG.Edges) {
 }
 </script>
 
-<template>
-  <div class="demo-control-panel">
-    <label>Node count:</label>
-    <el-input-number v-model="nodeCount" :min="3" :max="200" />
-    <label>(&lt;= 200)</label>
-  </div>
+<template class="h-screen">
+  <div class="h-screen">
 
-  <v-network-graph :zoom-level="0.5" :nodes="nodes" :edges="edges" :configs="configs" />
+    <v-network-graph :zoom-level="0.5" :nodes="nodes" :edges="edges" :configs="configs"     class="bg-gray-200 flex flex-col h-screen" />
+  </div>
 </template>
