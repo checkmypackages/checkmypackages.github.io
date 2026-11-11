@@ -5,18 +5,27 @@ import {
     ForceNodeDatum,
     ForceEdgeDatum,
 } from "v-network-graph/lib/force-layout"
-import { reactive, ref, watch } from "vue"
+import { reactive } from "vue"
+import { Nodes, Edges } from "v-network-graph"
 
-const nodeCount = ref(20)
-const nodes = reactive({})
-const edges = reactive({})
 
-// initialize network
-buildNetwork(nodeCount.value, nodes, edges)
+const nodes: Nodes = {
+    node1: { name: "N1" },
+    node2: { name: "N2" },
+    node3: { name: "N3" },
+    node4: { name: "N4" },
+    node5: { name: "N5" },
+    node6: { name: "N6" },
+}
 
-watch(nodeCount, () => {
-    buildNetwork(nodeCount.value, nodes, edges)
-})
+const edges: Edges = {
+    edge1: { source: "node1", target: "node2" },
+    edge2: { source: "node2", target: "node3" },
+    edge3: { source: "node2", target: "node4" },
+    edge4: { source: "node4", target: "node5" },
+    edge5: { source: "node4", target: "node6" },
+    edge6: { source: "node1", target: "node5" },
+}
 
 const configs = reactive(
     vNG.defineConfigs({
@@ -31,7 +40,7 @@ const configs = reactive(
                         .id(d => d.id)
                     return d3
                         .forceSimulation(nodes)
-                        .force("edge", forceLink.distance(40).strength(0.5))
+                        .force("edge", forceLink.distance(400).strength(0.5))
                         .force("charge", d3.forceManyBody().strength(-800))
                         .force("center", d3.forceCenter().strength(0.05))
                         .alphaMin(0.001)
@@ -40,33 +49,19 @@ const configs = reactive(
         },
         node: {
             label: {
-                visible: false,
+                visible: true,
             },
         },
+        edge: {
+            marker: {
+                source: {
+                    type: "arrow"
+                }
+            }
+        }
     })
 )
 
-function buildNetwork(count: number, nodes: vNG.Nodes, edges: vNG.Edges) {
-    const idNums = [...Array(count)].map((_, i) => i)
-
-    // nodes
-    const newNodes = Object.fromEntries(idNums.map(id => [`node${id}`, {}]))
-    Object.keys(nodes).forEach(id => delete nodes[id])
-    Object.assign(nodes, newNodes)
-
-    // edges
-    const makeEdgeEntry = (id1: number, id2: number) => {
-        return [`edge${id1}-${id2}`, { source: `node${id1}`, target: `node${id2}` }]
-    }
-    const newEdges = Object.fromEntries([
-        ...idNums
-            .map(n => [n, (Math.floor(n / 4) * 4) % count])
-            .map(([n, m]) => (n === m ? [n, (n + 4) % count] : [n, m]))
-            .map(([n, m]) => makeEdgeEntry(n, m)),
-    ])
-    Object.keys(edges).forEach(id => delete edges[id])
-    Object.assign(edges, newEdges)
-}
 </script>
 
 <template class="h-screen">
