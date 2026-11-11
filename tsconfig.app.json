@@ -6,7 +6,7 @@
     "allowArbitraryExtensions": true,
 
     /* Bundler mode */
-    "module": "es2022",
+    "module": "nodenext",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "moduleDetection": "force",
