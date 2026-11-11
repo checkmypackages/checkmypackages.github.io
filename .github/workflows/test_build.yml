@@ -1,0 +1,14 @@
+name: Build Vue
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+jobs:
+  build_vue:
+    runs-on: ubuntu-latest
+    name: Build Vue
+    steps:
+    - uses: actions/checkout@v7
+    - name: Build-Vue
+      run: npm install && npm run build
