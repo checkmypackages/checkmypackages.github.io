@@ -7,12 +7,13 @@ import {
 } from "v-network-graph/lib/force-layout"
 import { reactive } from "vue"
 import { useDevGraphStore } from "../stores/devGraph.ts"
+import { ref, watch } from 'vue'
 
 const devGraphStore = useDevGraphStore()
 
-const nodes = devGraphStore.nodes
+const nodes = ref(devGraphStore.nodes)
 
-const edges = devGraphStore.edges
+const edges = ref(devGraphStore.edges)
 
 const configs = reactive(
     vNG.defineConfigs({
@@ -56,5 +57,7 @@ const configs = reactive(
 
         <v-network-graph :zoom-level="0.5" :nodes="nodes" :edges="edges" :configs="configs"
             class="bg-gray-200 flex flex-col h-screen" />
+        {{ devGraphStore.nodes }}
+        {{ devGraphStore.edges }}
     </div>
 </template>

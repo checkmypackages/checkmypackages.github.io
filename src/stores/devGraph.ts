@@ -25,4 +25,10 @@ export const useDevGraphStore = defineStore('devGraph', {
             edge6: { source: "node1", target: "node5" },
         }
     } as DevGraph),
+    actions: {
+        setGraph(nodes: Nodes, edges: Edges) {
+            this.nodes = nodes
+            this.edges = edges
+        }
+    }
 })
