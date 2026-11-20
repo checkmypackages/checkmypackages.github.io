@@ -14,11 +14,17 @@ export const packagelock2graph = async (file: File): Promise<{ nodes: Nodes; edg
 
     for (const key in json.packages) {
         const packageEntry = json.packages[key]
-        nodes[packageEntry.name] = { name: packageEntry.name }
+        let packageName: string
+        if (key === "") {
+            packageName = packageEntry.name
+        } else {
+            packageName = key.replace("node_modules/", "")
+        }
+        nodes[packageName] = { name: packageName }
 
         if (packageEntry.dependencies) {
             for (const dep in packageEntry.dependencies) {
-                addEdges(edges, packageEntry.name, dep)
+                addEdges(edges, packageName, dep)
             }
         }
     }
