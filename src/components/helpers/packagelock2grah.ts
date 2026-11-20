@@ -24,22 +24,11 @@ export const packagelock2graph = async (file: File): Promise<{ nodes: Nodes; edg
         }
         nodes[packageName] = { name: packageName, version: packageEntry.version }
 
-        if (packageEntry.dependencies) {
-            addEdges(packageEntry.dependencies, edges, packageName, "Prod")
-        }
-
-        if (packageEntry.devDependencies) {
-            addEdges(packageEntry.devDependencies, edges, packageName, "Dev")
-        }
-        if (packageEntry.optionalDependencies) {
-            addEdges(packageEntry.optionalDependencies, edges, packageName, "Optional")
-        }
-        if (packageEntry.peerDependencies) {
-            addEdges(packageEntry.peerDependencies, edges, packageName, "Peer")
-        }
-        if (packageEntry.bundleDependencies) {
-            addEdges(packageEntry.bundleDependencies, edges, packageName, "Bundle")
-        }
+        addEdges(packageEntry.dependencies, edges, packageName, "Prod")
+        addEdges(packageEntry.devDependencies, edges, packageName, "Dev")
+        addEdges(packageEntry.optionalDependencies, edges, packageName, "Optional")
+        addEdges(packageEntry.peerDependencies, edges, packageName, "Peer")
+        addEdges(packageEntry.bundleDependencies, edges, packageName, "Bundle")
         
 
     }
