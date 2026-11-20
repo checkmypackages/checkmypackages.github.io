@@ -1,8 +1,10 @@
 import { Nodes, Edges } from "v-network-graph"
 
-function addEdges(edges: Edges, source: string, target: string) {
-    const edgeId = `edge_${Object.keys(edges).length + 1}`
-    edges[edgeId] = { source, target }
+function addEdges(dependencies: { [key: string]: string }, edges: Edges, packageName: string, type: string) {
+    for (const dep in dependencies) {
+        const edgeId = `edge_${Object.keys(edges).length + 1}`
+        edges[edgeId] = { source: packageName, target: dep, type }
+    }
 }
 export const packagelock2graph = async (file: File): Promise<{ nodes: Nodes; edges: Edges; }> => {
     // Implement the logic to convert a file to a graph representation
@@ -20,13 +22,26 @@ export const packagelock2graph = async (file: File): Promise<{ nodes: Nodes; edg
         } else {
             packageName = key.replace("node_modules/", "")
         }
-        nodes[packageName] = { name: packageName }
+        nodes[packageName] = { name: packageName, version: packageEntry.version }
 
         if (packageEntry.dependencies) {
-            for (const dep in packageEntry.dependencies) {
-                addEdges(edges, packageName, dep)
-            }
+            addEdges(packageEntry.dependencies, edges, packageName, "Prod")
         }
+
+        if (packageEntry.devDependencies) {
+            addEdges(packageEntry.devDependencies, edges, packageName, "Dev")
+        }
+        if (packageEntry.optionalDependencies) {
+            addEdges(packageEntry.optionalDependencies, edges, packageName, "Optional")
+        }
+        if (packageEntry.peerDependencies) {
+            addEdges(packageEntry.peerDependencies, edges, packageName, "Peer")
+        }
+        if (packageEntry.bundleDependencies) {
+            addEdges(packageEntry.bundleDependencies, edges, packageName, "Bundle")
+        }
+        
+
     }
     return {
         nodes,
