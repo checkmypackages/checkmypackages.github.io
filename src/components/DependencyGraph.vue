@@ -6,26 +6,9 @@ import {
     ForceEdgeDatum,
 } from "v-network-graph/lib/force-layout"
 import { reactive } from "vue"
-import { Nodes, Edges } from "v-network-graph"
+import { useDevGraphStore } from "../stores/devGraph.ts"
 
-
-const nodes: Nodes = {
-    node1: { name: "N1" },
-    node2: { name: "N2" },
-    node3: { name: "N3" },
-    node4: { name: "N4" },
-    node5: { name: "N5" },
-    node6: { name: "N6" },
-}
-
-const edges: Edges = {
-    edge1: { source: "node1", target: "node2" },
-    edge2: { source: "node2", target: "node3" },
-    edge3: { source: "node2", target: "node4" },
-    edge4: { source: "node4", target: "node5" },
-    edge5: { source: "node4", target: "node6" },
-    edge6: { source: "node1", target: "node5" },
-}
+const devGraphStore = useDevGraphStore()
 
 const configs = reactive(
     vNG.defineConfigs({
@@ -67,7 +50,7 @@ const configs = reactive(
 <template class="h-screen">
     <div class="h-screen">
 
-        <v-network-graph :zoom-level="0.5" :nodes="nodes" :edges="edges" :configs="configs"
+        <v-network-graph :zoom-level="0.5" :nodes="devGraphStore.nodes" :edges="devGraphStore.edges" :configs="configs"
             class="bg-gray-200 flex flex-col h-screen" />
     </div>
 </template>
