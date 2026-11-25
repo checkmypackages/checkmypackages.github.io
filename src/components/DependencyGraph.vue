@@ -9,7 +9,8 @@ import { reactive } from "vue"
 import { useDevGraphStore } from "../stores/devGraph.ts"
 
 const devGraphStore = useDevGraphStore()
-
+const rootColor = "#cc4466"
+const mainColor = "#6644cc"
 const configs = reactive(
     vNG.defineConfigs({
         view: {
@@ -23,14 +24,18 @@ const configs = reactive(
                         .id(d => d.id)
                     return d3
                         .forceSimulation(nodes)
-                        .force("edge", forceLink.distance(400).strength(0.5))
-                        .force("charge", d3.forceManyBody().strength(-800))
-                        .force("center", d3.forceCenter().strength(0.05))
-                        .alphaMin(0.001)
+                        .force("edge", forceLink.distance(300).strength(2.5))
+                        .force("charge", d3.forceManyBody().strength(-2000))
+                        .force("center", d3.forceCenter().strength(0.5))
+                        .alphaMin(0.01)
                 },
             }),
         },
         node: {
+            normal: {
+                radius: node => node.isRoot ? 50 : 15,
+                color: node => node.isRoot ? rootColor : mainColor,
+            },
             label: {
                 visible: true,
             },
