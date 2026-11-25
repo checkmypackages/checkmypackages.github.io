@@ -5,6 +5,22 @@ export type DevGraph = {
     nodes: Nodes;
     edges: Edges;
 }
+export const addTypes2Nodes = (nodes: Nodes, edges: Edges) => {
+    for(const edge in edges){
+        const type = edges[edge].type ? edges[edge].type : null
+
+        const targetNode = nodes[edges[edge].target]
+        if(!targetNode) {
+            console.warn(`Target node ${edges[edge].target} not found.`)
+            continue
+        }
+        let node_types = "types" in targetNode ? targetNode.types : []
+        if(type && !node_types.includes(type)){
+            node_types.push(type)
+            targetNode.types = node_types
+        }
+    }
+}
 
 export const useDevGraphStore = defineStore('devGraph', {
     state: () => ({
@@ -27,6 +43,7 @@ export const useDevGraphStore = defineStore('devGraph', {
     } as DevGraph),
     actions: {
         setGraph(nodes: Nodes, edges: Edges) {
+            addTypes2Nodes(nodes, edges)
             this.nodes = nodes
             this.edges = edges
         }
